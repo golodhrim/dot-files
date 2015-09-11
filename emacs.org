@@ -7,35 +7,6 @@
   This is my =.emacs= file, written using [[http://www.orgmode.org][org-mode]], so that I can
   organize it and take notes on all the complexity.
 
-** Emacs Executable
-
-   This file is really a /script/ that requires version 24 of Emacs.
-   While I often use [[http://emacsformacosx.com/builds][Emacs for Mac]], lately, I've been building from
-   [[http://brew.sh/][Homebrew]] with the following dependency:
-
-   #+BEGIN_SRC sh :tangle no
-     brew cask install xquartz
-   #+END_SRC
-
-   And then built from source especially for the Mac:
-
-   #+BEGIN_SRC sh :tangle no
-     brew install emacs --HEAD --use-git-head --with-cocoa \
-           --with-gnutls --srgb --with-librsvg --with-ns
-
-     brew linkapps emacs
-   #+END_SRC
-
-   Not only does this install the latest version of Emacs in
-   =/usr/local/bin/emacs=, but it also links a GUI version in
-   =/Application/Emacs.app=.
-
-   All Homebrew options for Emacs can be seen with the command:
-
-   #+BEGIN_SRC sh :tangle no
-     brew options emacs
-   #+END_SRC
-
 ** Loading this File
 
    To "load" the contents of this file, add the following to =$HOME/.emacs=:
@@ -146,6 +117,11 @@
    so this is mine.
 
    #+BEGIN_SRC elisp
+     (defun inverse-filter (condp lst)
+       "A filter function, but returns a list of the entries that
+       don't match the predicate."
+         (delq nil
+           (mapcar (lambda (x) (and (not (funcall condp x)) x)) lst)))
      (defun packages-install (packages)
        "Given a list of packages, this will install them from the standard locations."
        (let ((to-install (inverse-filter 'package-installed-p packages)))
@@ -162,44 +138,45 @@
    specify a list of packages to make sure they are installed.
 
    #+BEGIN_SRC elisp
-     (packages-install
-                    '(ace-jump-mode
-                      ag
-                      avy
-                      company
-                      company-quickhelp
-                      company-math
-                      dired-details
-                      color-identifiers-mode  ;; Color variables differently
-                      ctags-update
-                      epl
-                      esh-buf-stack
-                      expand-region
-                      flx
-                      flx-ido
-                      flycheck
-                      flycheck-color-mode-line
-                      git-blame
-                      git-gutter-fringe
-                      gitconfig-mode
-                      gitignore-mode
-                      graphviz-dot-mode
-                      hungry-delete
-                      htmlize
-                      hydra
-                      ido-vertical-mode
-                      iy-go-to-char
-                      linum-relative
-                      magit
-                      markdown-mode
-                      multiple-cursors
-                      paredit
-                      redo+             ;; If not installed, edit mac-key-mode
-                      smex
-                      thesaurus
-                      undo-tree
-                      visual-regexp
-                      yasnippet))
+          (packages-install
+                         '(ace-jump-mode
+                           ag
+                           avy
+                           company
+                           company-quickhelp
+                           company-math
+                           dired-details
+                           color-identifiers-mode  ;; Color variables differently
+                           ctags-update
+                           epl
+                           esh-buf-stack
+                           expand-region
+                           flx
+                           flx-ido
+                           flycheck
+                           flycheck-color-mode-line
+                           git-blame
+                           git-gutter-fringe
+                           gitconfig-mode
+                           gitignore-mode
+                           graphviz-dot-mode
+                           hungry-delete
+                           htmlize
+                           hydra
+                           ido-vertical-mode
+                           iy-go-to-char
+                           linum-relative
+                           magit
+                           markdown-mode
+                           multiple-cursors
+                           paredit
+                           redo+             ;; If not installed, edit mac-key-mode
+                           smex
+                           thesaurus
+                           undo-tree
+                           visual-regexp
+                           yasnippet
+                           color-theme-sanityinc-tomorrow))
    #+END_SRC
 
 ** Use-Package
@@ -210,15 +187,20 @@
      (require 'use-package)
    #+END_SRC
 
+   Adding ColorTheme.
+   #+BEGIN_SRC elisp
+     (require 'color-theme-sanityinc-tomorrow)
+   #+END_SRC
+
 * Variables
 
   General settings about me that other packages can use. The biggest
   problem is guessing my email address based on what computer I am using:
 
   #+BEGIN_SRC elisp
-    (if (equal "howard.abrams" user-login-name)
-        (setq user-mail-address "howard.abrams@workday.com")
-      (setq user-mail-address "howard.abrams@gmail.com"))
+    (if (equal "martins" user-login-name)
+        (setq user-mail-address "scholz@denic.de")
+      (setq user-mail-address "scholz.m82@gmail.com"))
   #+END_SRC
 
 ** Tabs vs Spaces
@@ -1317,7 +1299,7 @@
       (setq-default abbrev-mode t)
     #+END_SRC
 
-** Spell Checking
+*0* Spell Checking
 
    I like spell checking with [[http://www.emacswiki.org/emacs/FlySpell][FlySpell]], which uses the built-in
    spell-check settings of [[https://www.gnu.org/software/ispell/][ispell]].

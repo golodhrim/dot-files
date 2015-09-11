@@ -128,15 +128,15 @@ connections, so I'm back to using Jedi...for now. See [[http://www.masteringemac
   package components:
 
   #+BEGIN_SRC sh
-    pip install jedi
+    pip3 install jedi
 
     # flake8 for code checks ... which installs pep8
-    pip install flake8
+    pip3 install flake8
 
     # and importmagic for automatic imports
-    pip install importmagic
+    pip3 install importmagic
 
-    pip install elpy
+    pip3 install elpy
   #+END_SRC
 
   Once this has been installed, we can enable it:
